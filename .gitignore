@@ -1,0 +1,25 @@
+cat <<EOF > .gitignore
+# Python & uv
+__pycache__/
+.venv/
+.python-version
+.ipynb_checkpoints
+
+# Data
+*.csv
+*.json
+*.xlsx
+*.parquet
+
+# Images
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+
+# OS & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+EOF
