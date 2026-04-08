@@ -6,14 +6,22 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "jupyter>=1.1.1",
+    "konlpy>=0.6.0",
     "matplotlib>=3.10.8",
+    "nltk>=3.9.4",
     "numpy>=2.4.4",
+    "openai>=2.30.0",
     "pandas>=3.0.2",
     "pingouin>=0.6.1",
+    "pyarrow>=23.0.1",
+    "pydantic-ai>=1.78.0",
+    "pyspark>=4.1.1",
+    "python-dotenv>=1.2.2",
     "scikit-learn>=1.8.0",
     "scikit-posthocs>=0.12.0",
     "scipy>=1.17.1",
     "seaborn>=0.13.2",
+    "spacy>=3.8.14",
     "statsmodels>=0.14.6",
     "xgboost>=3.2.0",
 ]
