@@ -30,6 +30,7 @@ dependencies = [
     "opentelemetry-api>=1.39.1",
     "pandas>=3.0.2",
     "pingouin>=0.6.1",
+    "plotly>=6.6.0",
     "pyarrow>=23.0.1",
     "pyasn1>=0.6.3",
     "pyasn1-modules>=0.4.2",
