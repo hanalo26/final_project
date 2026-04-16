@@ -297,25 +297,27 @@ async def run_agent(company_names: list) -> list:
 # 6. 성능 테스트
 # ========================================
 
-async def main():
-    # 테스트용 기업 리스트 (Agent 성능 테스트용 샘플 데이터)
-    test_companies = [
-        "삼성전자",
-        "LG전자",
-        "네이버",
-        "네이버페이"
-    ]
-    
 # async def main():
-#     # 실제 기업 리스트 
-#     df = pd.read_csv("./data/IT_company_list.csv", encoding="utf-8-sig")
-#     company_names = df['company_name'].tolist()  # 기업명 컬럼명에 맞게 수정
+#     # 테스트용 기업 리스트 (Agent 성능 테스트용 샘플 데이터)
+#     test_companies = [
+#         "삼성전자",
+#         "LG전자",
+#         "네이버",
+#         "네이버페이"
+#     ]
+    
+async def main():
+    # 실제 기업 리스트 
+    # window에서 만든 한글 csv 파일 인코딩: cp949
+    df = pd.read_csv("./data/IT_company_list.csv", encoding="cp949")
+    company_names = df['name'].tolist()  # 기업명 컬럼명에 맞게 수정
 
-#     print(f"전체 기업 수: {len(company_names)}개")
-#     print("=" * 60)
+    print(f"전체 기업 수: {len(company_names)}개")
+    print("=" * 60)
 
     # Agent 호출
-    all_results, stats, total_tokens = await run_agent(test_companies)
+    # all_results, stats, total_tokens = await run_agent(test_companies) # 테스트용
+    all_results, stats, total_tokens = await run_agent(company_names) # 실전
 
     # 처리 결과 요약
     print()
