@@ -54,9 +54,6 @@ except Exception as e:
 uvx_path = shutil.which('uvx')
 print(f"\nuvx 설치 확인: {'✅' if uvx_path else '❌'}")
 
-# API 호출 간격 (초)
-API_DELAY = 3
-
 # ========================================
 # 3. 응답 스키마 정의
 # ========================================
@@ -108,7 +105,7 @@ class Company(BaseModel):
 # 4. 체크포인트 및 지수 백오프 함수 정의
 # ========================================
 
-CHECKPOINT_FILE = Path("./outputs/checkpoint_IT(test용_배치처리).json")
+CHECKPOINT_FILE = Path("./outputs/checkpoint_IT기업(배치처리_테스트2).json") # 작업에 따라 파일명 변경 필요
 CHECKPOINT_FILE.parent.mkdir(exist_ok=True)
 CHECKPOINT_EVERY = 3         # N건마다 중간 저장
 MAX_RETRIES = 4              # 최대 재시도 횟수
@@ -297,27 +294,21 @@ async def run_agent(company_names: list) -> list:
 # 6. 성능 테스트
 # ========================================
 
-# async def main():
-#     # 테스트용 기업 리스트 (Agent 성능 테스트용 샘플 데이터)
-#     test_companies = [
-#         "삼성전자",
-#         "LG전자",
-#         "네이버",
-#         "네이버페이"
-#     ]
-    
 async def main():
-    # 실제 기업 리스트 
-    # window에서 만든 한글 csv 파일 인코딩: cp949
-    df = pd.read_csv("./data/IT_company_list.csv", encoding="cp949")
-    company_names = df['name'].tolist()  # 기업명 컬럼명에 맞게 수정
+    # 테스트용 기업 리스트 (Agent 성능 테스트용 샘플 데이터)
+    test_companies = [
+        "그로비랩스",
+        "거민시스템",
+        "디피코어",
+        "피플데이타",
+        "카카오페이"
+    ]
 
-    print(f"전체 기업 수: {len(company_names)}개")
+    print(f"전체 기업 수: {len(test_companies)}개")
     print("=" * 60)
 
     # Agent 호출
-    # all_results, stats, total_tokens = await run_agent(test_companies) # 테스트용
-    all_results, stats, total_tokens = await run_agent(company_names) # 실전
+    all_results, stats, total_tokens = await run_agent(test_companies)
 
     # 처리 결과 요약
     print()
