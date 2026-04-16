@@ -111,7 +111,7 @@ CHECKPOINT_FILE = Path("./outputs/checkpoint_IT(test용_순차처리).json")
 CHECKPOINT_FILE.parent.mkdir(exist_ok=True)
 CHECKPOINT_EVERY = 3         # N건마다 중간 저장
 MAX_RETRIES = 4              # 최대 재시도 횟수
-BASE_DELAY = 10              # 기본 대기 시간 (초)
+BASE_DELAY = 7               # 기본 대기 시간 (초)
 MAX_DELAY = 60               # 최대 대기 시간 (초)
 
 # 체크 포인트 저장/복원
@@ -303,7 +303,7 @@ async def main():
     # 테스트용 기업 리스트 (Agent 성능 테스트용 샘플 데이터)
     test_companies = [
         "삼성전자",
-        "네이버페이"
+        "LG전자"
     ]
     
 # async def main():

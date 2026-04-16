@@ -301,6 +301,8 @@ async def main():
     # 테스트용 기업 리스트 (Agent 성능 테스트용 샘플 데이터)
     test_companies = [
         "삼성전자",
+        "LG전자",
+        "네이버",
         "네이버페이"
     ]
     
