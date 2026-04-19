@@ -1152,7 +1152,7 @@ requires-dist = [
     { name = "pyasn1-modules", specifier = ">=0.4.2" },
     { name = "pycparser", specifier = ">=3.0" },
     { name = "pydantic", specifier = ">=2.12.5" },
-    { name = "pydantic-ai", specifier = ">=1.78.0" },
+    { name = "pydantic-ai", extras = ["vertexai"], specifier = ">=1.78.0" },
     { name = "pydantic-ai-slim", specifier = ">=1.78.0" },
     { name = "pydantic-core", specifier = ">=2.41.5" },
     { name = "pydantic-graph", specifier = ">=1.78.0" },
