@@ -14,10 +14,10 @@ from tqdm import tqdm
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 from pydantic_ai import Agent, ModelRetry
-from pydantic_ai.tools import Tool                                 # 커스텀 도구 등록용
+from pydantic_ai.tools import Tool                              # 커스텀 도구 등록용
 from pydantic_ai.common_tools.tavily import tavily_search_tool  # Tavily 검색 도구 직접 연결
 
-# Vertex AI 연결용
+# Vertex AI 연결용(🟥수정)
 from pydantic_ai.models.google import GoogleModel, GoogleModelSettings
 from pydantic_ai.providers.google import GoogleProvider
 
@@ -33,13 +33,13 @@ from utils import print_tool_calls                              # 도구 호출 
 #              -> 모델명을 바꿔도 .env 파일 다시 안 만들어도 됨
 load_dotenv(dotenv_path=".env", override=True)
 
-GOOGLE_CLOUD_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT")
-GOOGLE_CLOUD_REGION = os.getenv("GOOGLE_CLOUD_REGION")
+GOOGLE_CLOUD_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT") #🟥수정
+GOOGLE_CLOUD_REGION = os.getenv("GOOGLE_CLOUD_REGION") #🟥수정
 TAVILY_API_KEY = os.getenv("TAVILY_API_KEY")
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", '')
 
-# Vertex AI 유효성 검사
+# Vertex AI 유효성 검사(🟥수정)
 provider = GoogleProvider(
     vertexai=True,
     project=GOOGLE_CLOUD_PROJECT,
