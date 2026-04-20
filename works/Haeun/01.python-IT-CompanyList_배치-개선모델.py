@@ -33,7 +33,10 @@ from pydantic import BaseModel, Field
 from pydantic_ai import Agent, ModelRetry
 from pydantic_ai.tools import Tool                                 # 커스텀 도구 등록용
 from pydantic_ai.common_tools.tavily import tavily_search_tool  # Tavily 검색 도구 직접 연결
-from pydantic_ai.models.google import GoogleModelSettings       # 모델 설정 (temperature 등)
+
+# Vertex AI 연결
+from pydantic_ai.models.google import GoogleModel, GoogleModelSettings
+from pydantic_ai.providers.google import GoogleProvider
 
 import sys
 sys.path.append(str(Path(__file__).resolve().parents[2]))       # 프로젝트 루트를 import 경로에 추가
@@ -47,19 +50,22 @@ from utils import print_tool_calls                              # 도구 호출 
 #              -> 모델명을 바꿔도 .env 파일 다시 안 만들어도 됨
 load_dotenv(dotenv_path=".env", override=True)
 
-GEMINI_API_KEY  = os.getenv("GEMINI_API_KEY")
+GOOGLE_CLOUD_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT")
+GOOGLE_CLOUD_REGION = os.getenv("GOOGLE_CLOUD_REGION")
 TAVILY_API_KEY  = os.getenv("TAVILY_API_KEY")
 YOUTUBE_API_KEY = os.getenv("YOUTUBE_API_KEY")
 GEMINI_MODEL    = os.getenv("GEMINI_MODEL", '')
 
-# PydanticAI는 GEMINI_API_KEY 환경변수를 자동으로 인식
-# 모델 ID 형식: 'google-gla:{모델명}'
-model_id = f"google-gla:{GEMINI_MODEL}"
+# Vertex AI 유효성 검사
+provider = GoogleProvider(
+    vertexai=True,
+    project=GOOGLE_CLOUD_PROJECT,
+    location=GOOGLE_CLOUD_REGION,
+)
+model_id = GoogleModel(GEMINI_MODEL, provider=provider)
 
-# API 키 유효성 검사
-api_key_valid = GEMINI_API_KEY and "YOUR_API_KEY" not in GEMINI_API_KEY
-print(f"Gemini API 키 설정 확인: {'✅' if api_key_valid else '❌'}")
-print(f"사용할 모델: {model_id}")
+print(f"Google Cloud Project: {'✅' if GOOGLE_CLOUD_PROJECT else '❌'} ({GOOGLE_CLOUD_PROJECT})")
+print(f"사용할 모델: {GEMINI_MODEL} / 지역: {GOOGLE_CLOUD_REGION}")
 
 # Tavily API 연결 확인
 try:
