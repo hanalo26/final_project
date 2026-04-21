@@ -269,7 +269,7 @@ async def analyze_one(
                     pbar.set_postfix(성공=stats['success'], 실패=stats['fail'])
 
 # ========================================
-# 5. YouTube 도구 함수 정의 (검색 + 검증) <- 모델 개선 시 추가된 도구
+# 5. YouTube 도구 함수 정의 (검색 + 검증)
 # ========================================
 
 def search_youtube_channel(query: str) -> str:
@@ -361,7 +361,7 @@ def verify_youtube_channel(channel_handle_or_id: str) -> str:
 # 6. 시스템 프롬프트 및 Agent 초기화
 # ========================================
 
-it_system_prompt = """
+system_prompt = """
 너는 기업의 공식 유튜브 채널을 찾는 데이터 전문가야.
 한 기업이 공식 채널을 여러 개 운영할 수 있으므로 (예: 국내용, 글로벌용, 채용 채널 등),
 찾을 수 있는 공식 채널을 모두 찾아줘.
@@ -445,7 +445,7 @@ async def run_agent(company_names: list) -> list:
     agent = Agent(
         model_id,
         output_type=Company,
-        system_prompt=it_system_prompt,
+        system_prompt=system_prompt,
         retries=3,
         tools=[
             tavily_search_tool(TAVILY_API_KEY),              # Tavily 웹 검색 도구
