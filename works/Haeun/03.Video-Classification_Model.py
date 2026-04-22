@@ -292,6 +292,8 @@ system_prompt = """
     (예: 매장 펫존 소개, 사옥 투어, 데이터센터 소개)
 - 광고, 행사 등의 촬영 현장을 스케치하거나 메이킹 필름 형식이면 브이로그를 고려해
 - 제품을 짧고 강하게 보여주거나 캠페인 해시태그 중심의 짧은 영상이면 광고/CF를 고려해
+- 제품리뷰는 실제로 제품을 사용하거나 시음하며 특징을 소개하는 형식이 명확할 때만 선택해
+  (콜라보 신메뉴 티저, 제품 출시 영상은 광고/CF를 고려해)
 - 제목이나 설명에 이벤트, 공모전, 기념일, 행사 관련 내용이 있으면 이벤트/행사를 고려해
 - 기타는 위 포맷 중 어디에도 명확히 해당하지 않을 때만 선택해
 
@@ -379,11 +381,6 @@ async def run_agent(df: pd.DataFrame) -> list:
         if output.domain == "F&B" and output.content_type in it_only:
             raise ModelRetry(
                 f"domain=F&B인데 content_type={output.content_type}은 IT 전용입니다. 다시 분류해주세요."
-            )
-        if output.marketing_purpose == "제품홍보" and output.cta_type == "기타":
-            raise ModelRetry(
-                "marketing_purpose=제품홍보인데 cta_type=기타는 어색합니다. "
-                "설명란에 명시적 CTA가 없으면 구매유도를 선택해주세요."
             )
         return output
     
