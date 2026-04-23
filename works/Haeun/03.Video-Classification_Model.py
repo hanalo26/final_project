@@ -399,7 +399,7 @@ async def run_agent(df: pd.DataFrame) -> list:
     # 최종 체크포인트 저장
     save_checkpoint(all_results)
 
-    return all_results, stats, total_tokens
+    return all_results, stats, total_tokens # 실질적으로는 세 개가 묶여서 튜플로 반환됨
         
 # ========================================
 # 6. Agent 작업 실행
