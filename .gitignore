@@ -26,3 +26,13 @@ EOF
 
 # 환경변수 
 .env
+
+# Video files
+*.mp4
+*.avi
+*.mov
+*.webm
+
+# Reports
+*.pdf
+*.html
