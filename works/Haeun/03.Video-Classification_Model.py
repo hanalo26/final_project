@@ -136,7 +136,7 @@ class VideoClassification(BaseModel):
         "방문유도",    # 오프라인 매장, 팝업스토어 등 현장 방문을 유도하는 경우
         "기타",        # 위 유형 중 어디에도 명확히 해당하지 않거나 명시적인 CTA가 없는 경우
     ] = Field(description="이 영상이 시청자에게 무엇을 하도록 유도하는지 고른다. "
-                          "설명란을 먼저 확인하고, 명시적 CTA가 없으면 marketing_purpose를 참고해서 추론한다.")
+                        "설명란을 먼저 확인하고, 명시적 CTA가 없으면 marketing_purpose를 참고해서 추론한다.")
 
     is_series: bool = Field(
         description="제목에 EP, 1화, 2화, #1, 시즌, Part, Track, Session, Day, Vol 등 순서를 나타내는 표현이 있으면 True, 없으면 False"
