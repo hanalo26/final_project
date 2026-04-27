@@ -63,4 +63,5 @@ dependencies = [
     "opencv-python>=4.13.0.92",
     "google-cloud-aiplatform>=1.148.1",
     "ffmpeg-python>=0.2.0",
+    "youtube-transcript-api>=1.2.4",
 ]
