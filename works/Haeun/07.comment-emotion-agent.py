@@ -233,7 +233,8 @@ system_prompt = """
 - "미쳤다", "말도 안 된다", "어이없어", "이거 실화냐", "죽겠다", "미치겠다" 등은 한국어에서 극찬·감탄으로 쓰이는 경우가 많으므로 반드시 문맥을 보고 긍정/부정을 판단해
 - "역시", "그럼 그렇지" 등 긍정·부정 모두 해석 가능한 표현은 앞뒤 문맥을 보고 판단해
 - 댓글 이벤트의 빈칸 정답, 퀴즈 답변 등 이벤트 참여 목적으로 작성된 댓글은 단어 자체의 의미와 관계없이 중립으로 분류해.
-  (예: 정답이 "행복", "최고" 등 긍정적 단어여도 이벤트 참여 댓글이면 중립)
+  단, 정답 외에 이벤트와 무관한 독립적인 감정 표현이 있으면 해당 감정을 기준으로 분류해.
+  (예: 정답 + 형식적 응원 문구 → 중립 / 정답 + 실제 불만·개선 요청 → 부정 / 정답 + 진심 어린 칭찬 → 긍정)
 - 광고성 댓글이나 의미 없는 반복 문자는 중립으로 분류해
 - 19금 댓글이 섞여있다면 분석에서 제외해
 - comment_id와 video_id는 분류하지 말고 입력값 그대로 출력해
@@ -381,54 +382,43 @@ def visualize(df_result: pd.DataFrame, csv_stem: str) -> None:
         fontsize=10,
     )
 
-    # 차트 2: 영상별 감성 비율 (누적 가로 막대차트)
+    # 차트 2: 영상별 감성 비율 (히트맵)
     ax2 = axes[1]
-    left = np.zeros(len(pivot))
 
-    for i, sentiment in enumerate(SENTIMENT_ORDER):
-        # 작은 슬라이스 외부 텍스트 위/아래 교차 배치 (겹침 방지)
-        offset_sign = 1 if i % 2 == 0 else -1
+    SENTIMENT_ORDER_DISPLAY = ["긍정", "중립", "부정"]
+    x_pos = np.arange(len(SENTIMENT_ORDER_DISPLAY))
+    video_ids = pivot.index.tolist()
+    y_pos = np.arange(len(video_ids))
 
-        values = pivot[sentiment].values
-        bars   = ax2.barh(
-            pivot.index,
-            values,
-            left=left,
-            color=SENTIMENT_COLORS[sentiment],
-            label=sentiment,
-            height=0.6,
-        )
-        for bar, val in zip(bars, values):
-            if val == 0:
-                continue
-            x_center = bar.get_x() + bar.get_width() / 2
-            y_center = bar.get_y() + bar.get_height() / 2
+    for j, sentiment in enumerate(SENTIMENT_ORDER_DISPLAY):
+        for i, video_id in enumerate(video_ids):
+            val = pivot.loc[video_id, sentiment]
+            alpha = max(0.1, val / 100)
+            base_color = SENTIMENT_COLORS[sentiment]
 
-            if val >= 5:  # 내부 표시
+            ax2.add_patch(plt.Rectangle(
+                (j - 0.5, i - 0.5), 1, 1,
+                color=base_color, alpha=alpha
+            ))
+            if val > 0:
                 ax2.text(
-                    x_center, y_center,
-                    f"{val:.1f}%",
+                    j, i, f"{val:.1f}%",
                     ha="center", va="center",
-                    fontsize=8, color="white", fontweight="bold",
+                    fontsize=9,
+                    color="white" if val >= 30 else "black",
+                    fontweight="bold",
                 )
-            else:          # 외부에 선 연결
-                ax2.annotate(
-                    f"{val:.1f}%",
-                    xy=(x_center, y_center),
-                    xytext=(x_center, y_center + offset_sign * 0.45),
-                    arrowprops=dict(arrowstyle="-", color="gray", lw=1),
-                    ha="center", va="center",
-                    fontsize=8,
-                )
-        left += values
 
-    ax2.set_xlim(0, 100)
-    ax2.set_xlabel("비율 (%)", fontsize=11)
+    ax2.set_xlim(-0.5, len(SENTIMENT_ORDER_DISPLAY) - 0.5)
+    ax2.set_ylim(-0.5, len(video_ids) - 0.5)
+    ax2.set_xticks(x_pos)
+    ax2.set_xticklabels(SENTIMENT_ORDER_DISPLAY, fontsize=11)
+    ax2.set_yticks(y_pos)
+    ax2.set_yticklabels(video_ids, fontsize=9)
     ax2.set_title("영상별 댓글의 감성 비율", fontsize=13)
-    ax2.legend(loc="lower right", fontsize=10)
-    ax2.xaxis.set_major_formatter(mticker.FormatStrFormatter("%d%%"))
-    ax2.invert_yaxis()  # 위에서 아래로 정렬
-    sns.despine(ax=ax2)
+    ax2.invert_yaxis()
+    sns.despine(ax=ax2, left=True, bottom=True)
+    ax2.tick_params(left=False, bottom=False)
 
     plt.tight_layout()
     chart_path = Path(f"./outputs/sentiment_{csv_stem}.png")
