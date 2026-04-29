@@ -13,7 +13,6 @@ import numpy as np
 import argparse
 import matplotlib.pyplot as plt
 import seaborn as sns
-import matplotlib.ticker as mticker
 
 from pathlib import Path
 from tqdm import tqdm
