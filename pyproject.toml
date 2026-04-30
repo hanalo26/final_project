@@ -64,4 +64,6 @@ dependencies = [
     "google-cloud-aiplatform>=1.148.1",
     "ffmpeg-python>=0.2.0",
     "youtube-transcript-api>=1.2.4",
+    "isodate>=0.7.2",
+    "missingno>=0.5.2",
 ]
