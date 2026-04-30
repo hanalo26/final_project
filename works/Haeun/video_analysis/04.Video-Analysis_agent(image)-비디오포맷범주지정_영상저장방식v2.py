@@ -378,6 +378,7 @@ async def analyze_one(
       (2) OpenCV 라이브러리를 사용해 정량 분석 수행
       (3) Gemini를 사용하여 정성 분석 수행
       (4) 두 분석 결과를 통합하여 저장
+        - 분석에 사용한 동영상은 삭제.
     """
     async with sem:
         video_id = row['video_id']
