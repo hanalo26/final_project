@@ -86,6 +86,8 @@ CommentSentiment (BaseModel)
  comment_id  (str)       : 댓글 고유 ID
  video_id    (str)       : 영상 고유 ID
  sentiment   (Literal)   : 댓글의 감성 레이블 (긍정 / 부정 / 중립)
+ is_korean   (bool)      : 댓글의 주 언어가 한국어이면 True, 외국어이면 False
+ is_event    (bool)      : 이벤트 참여 목적으로 작성된 댓글이면 True, 아니면 False
  reason      (str)       : 위와 같은 감성으로 분류한 근거 (15자 이상)
 """
 
@@ -93,12 +95,24 @@ class CommentSentiment(BaseModel):
     comment_id: str = Field(
         description="댓글의 고유 ID. 입력 데이터에서 그대로 가져온다."
     )
+    
     video_id: str = Field(
         description="댓글이 달린 영상의 고유 ID. 입력 데이터에서 그대로 가져온다."
     )
+    
     sentiment: Literal["긍정", "부정", "중립"] = Field(
         description="댓글의 맥락을 분석하여 긍정적인 댓글인지, 부정적인 댓글인지 판단한다."
     )
+    
+    is_korean: bool = Field(
+        description="댓글의 주 언어가 한국어이면 True, 외국어이면 False로 처리한다."
+                    "한국어와 외국어가 혼용된 경우 주 언어를 기준으로 판단한다."
+    )
+    
+    is_event: bool = Field(
+        description="빈칸 정답, 퀴즈 답변 등 이벤트 참여 목적으로 작성된 댓글이면 True, 아니면 False로 처리한다."
+    )
+    
     reason: str = Field(
         description="위 감성으로 분류한 근거를 15자 이상의 문장으로 설명한다.",
         min_length=15
@@ -236,6 +250,10 @@ system_prompt = """
   (예: 정답 + 형식적 응원 문구 → 중립 / 정답 + 실제 불만·개선 요청 → 부정 / 정답 + 진심 어린 칭찬 → 긍정)
 - 광고성 댓글이나 의미 없는 반복 문자는 중립으로 분류해
 - 19금 댓글이 섞여있다면 분석에서 제외해
+- 댓글의 주 언어가 한국어이면 is_korean을 True, 외국어이면 False로 판단해.
+  한국어와 외국어가 혼용된 경우 주 언어를 기준으로 판단해.
+- 빈칸 정답, 퀴즈 답변 등 이벤트 참여 목적으로 작성된 댓글이면 is_event를 True,
+  아니면 False로 판단해.
 - comment_id와 video_id는 분류하지 말고 입력값 그대로 출력해
 """
 
