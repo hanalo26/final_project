@@ -16,7 +16,7 @@ from tqdm import tqdm
 from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 from typing import Literal, List
-from pydantic_ai import Agent, BinaryContent
+from pydantic_ai import Agent, BinaryContent, ModelRetry
 
 from pydantic_ai.models.google import GoogleModel, GoogleModelSettings
 from pydantic_ai.providers.google import GoogleProvider
@@ -462,7 +462,6 @@ system_prompt = """
 2. 리스트 필드(dominant_colors, main_objects)는 확인된 값만 반환해.
    - 값이 없으면 빈 리스트([])를 반환해.
    - dominant_colors는 최대 3가지를 반환하되, 3가지 미만이면 있는 만큼만 반환해.
-3. person_count는 has_person=False이면 0을, has_person=True이면 반드시 1 이상을 반환해.
 
 [평가 기준]
 1. thumbnail_category는 반드시 아래 중 하나로 분류해.
@@ -520,6 +519,18 @@ async def run_agent(df: pd.DataFrame) -> tuple:
         system_prompt=system_prompt,
         retries=3
     )
+    
+    # output_validator: 논리적 일관성 검증
+    @agent.output_validator
+    async def validate_person_count(ctx, value: ThumbnailAnalysis) -> ThumbnailAnalysis:
+        # has_person=False인데 person_count가 1 이상이면 재시도
+        if not value.has_person and value.person_count > 0:
+            raise ModelRetry("has_person=False이면 person_count는 0이어야 합니다. 다시 분석해주세요.")
+        
+        # has_person=True인데 person_count가 0이면 재시도
+        if value.has_person and value.person_count == 0:
+            raise ModelRetry("has_person=True이면 person_count는 1 이상이어야 합니다. 다시 분석해주세요.")
+        return value
 
     settings = GoogleModelSettings(temperature=0.3)
     pbar = tqdm(total=len(pending), desc="썸네일 분석")
