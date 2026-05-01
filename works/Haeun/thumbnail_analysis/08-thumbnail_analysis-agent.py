@@ -392,7 +392,6 @@ async def analyze_one(
                 combined = result.output.model_dump()  # 정성 분석 결과 저장
                 combined.update(quant_result)          # 정량 분석 결과 합치기
                 combined['channel_title'] = row['channel_title']
-                combined['domain'] = row['domain']
 
                 all_results.append(combined)
 
