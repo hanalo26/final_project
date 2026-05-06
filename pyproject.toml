@@ -66,4 +66,6 @@ dependencies = [
     "youtube-transcript-api>=1.2.4",
     "isodate>=0.7.2",
     "missingno>=0.5.2",
+    "lightgbm>=4.6.0",
+    "shap>=0.51.0",
 ]
