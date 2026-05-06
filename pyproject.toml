@@ -68,4 +68,5 @@ dependencies = [
     "missingno>=0.5.2",
     "lightgbm>=4.6.0",
     "shap>=0.51.0",
+    "streamlit>=1.57.0",
 ]
