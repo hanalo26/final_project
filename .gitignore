@@ -36,3 +36,6 @@ EOF
 # Reports
 *.pdf
 *.html
+
+# Streamlit
+.streamlit/secrets.toml
