@@ -38,4 +38,4 @@ EOF
 *.html
 
 # Streamlit
-.streamlit/secrets.toml
+**/secrets.toml
