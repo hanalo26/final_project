@@ -1,0 +1,14 @@
+streamlit
+pandas
+numpy
+plotly
+matplotlib
+scikit-learn
+xgboost
+joblib
+pillow
+requests
+beautifulsoup4
+yt-dlp
+opencv-python-headless
+google-genai
