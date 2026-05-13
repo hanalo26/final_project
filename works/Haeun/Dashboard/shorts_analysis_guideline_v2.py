@@ -18,7 +18,7 @@ from pydantic_ai import Agent
 from pydantic_ai.models.google import GoogleModel, GoogleModelSettings
 from pydantic_ai.providers.google import GoogleProvider
 
-
+from utills_thumbnail_v2 import _get_gcp_credentials, init_vertex
 # ============================================================
 # 0. 기본 설정
 # ============================================================
@@ -473,6 +473,7 @@ def generate_ai_guideline(prompt_text: str) -> str:
             "GOOGLE_CLOUD_PROJECT, GOOGLE_CLOUD_REGION, GEMINI_PROMPT_MODEL을 확인하세요."
         )
 
+    init_vertex(GOOGLE_CLOUD_PROJECT, GOOGLE_CLOUD_REGION)
     provider = GoogleProvider(
         vertexai=True,
         project=GOOGLE_CLOUD_PROJECT,

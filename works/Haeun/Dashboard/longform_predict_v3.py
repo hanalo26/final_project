@@ -65,6 +65,11 @@ from pydantic_ai import Agent
 from pydantic_ai.models.google import GoogleModel
 from pydantic_ai.providers.google import GoogleProvider
 
+import vertexai
+from google.oauth2 import service_account
+import google.auth
+from utills_thumbnail_v2 import _get_gcp_credentials, init_vertex
+
 # ── 페이지 설정 ───────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="YouTube 영상 성과 예측",
@@ -89,15 +94,18 @@ EMBEDDING_DIM = 768
 # ── Gemini 임베딩 클라이언트 ──────────────────────────────────────────────
 @st.cache_resource
 def get_gemini_client():
+    creds = _get_gcp_credentials()
     return genai.Client(
         vertexai=True,
         project=GCP_PROJECT,
         location="global", # 예측을 위해 사용했던 임베딩 모델이 'global'에서만 지원되기 때문에 하드코딩으로 변경 
+        credentials=creds,
     )
 
 # ── PydanticAI 에이전트 (AI 종합 요약) ───────────────────────────────────
 @st.cache_resource
 def get_comment_agent():
+    init_vertex(GCP_PROJECT, GCP_REGION)
     provider = GoogleProvider(
         vertexai=True,
         project=GCP_PROJECT,

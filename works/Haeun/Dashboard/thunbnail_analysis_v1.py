@@ -7,7 +7,7 @@ thumbnail_analysis.py — 채널 분석 컴포넌트
 """
 import streamlit as st
 import time
-from utills_thumbnail import (
+from utills_thumbnail_v2 import (
     inject_css, init_session_state,
     render_channel_result, run_channel_analysis,
     yt_search_channel_candidates, render_channel_candidate_picker,
