@@ -33,7 +33,7 @@ load_dotenv(dotenv_path=".env", override=True)
 
 GOOGLE_CLOUD_PROJECT = os.getenv("GOOGLE_CLOUD_PROJECT")
 GOOGLE_CLOUD_REGION = os.getenv("GOOGLE_CLOUD_REGION")
-GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_MODEL = "gemini-2.5-flash" # 모델 안정성을 위해 하드코딩 방식 선택 (추후 변경 가능)
 
 # Vertex AI 유효성 검사
 provider = GoogleProvider(
