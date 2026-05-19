@@ -71,12 +71,6 @@ csv_stem = Path(args.csv_path).stem
 
 # ========================================
 # 4. 응답 스키마 정의
-# TODO: video_format 두 가지 버전 테스트 예정
-    # 방식 A. 자유 분류 (Gemini가 알아서 분류) 
-    # video_format: str
-
-    # 방식 B. 합의된 범주로 분류 (합의된 영상 포맷 범주로 채우기) <- 현재 파일
-    # video_format: Literal[...]
 # ========================================
 
 """
@@ -215,8 +209,8 @@ class VideoAnalysis(BaseModel):
 # ========================================
 
 # 체크포인트 파일 경로 (CSV 파일명 기반으로 동적 생성)
-CHECKPOINT_FILE = Path(f"works/Haeun/video_analysis/checkpoints/checkpoint_{csv_stem}.json")
-CHECKPOINT_FILE.parent.mkdir(exist_ok=True)
+CHECKPOINT_FILE = Path(__file__).parent / "checkpoints" / f"checkpoint_{csv_stem}.json"
+CHECKPOINT_FILE.parent.mkdir(parents=True, exist_ok=True)
 
 CHECKPOINT_EVERY = 5          # N건마다 중간 저장
 MAX_RETRIES = 4               # 최대 재시도 횟수
