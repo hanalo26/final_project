@@ -57,12 +57,14 @@ parser = argparse.ArgumentParser()
 parser.add_argument('csv_path')
 
 # 옵션 인자
+BASE_DIR = Path(__file__).parent
+
 parser.add_argument("--concurrent", type=int, default=3) # 동시 실행 수 (기본값 3)
 parser.add_argument("--delay", type=int, default=10)     # 기본 대기 시간 (기본값 10초)
 parser.add_argument("--video_dir", type=str,             # 영상 저장 폴더 위치 지정 (args.video_dir로 접근 가능)
-    default="works/Haeun/video_analysis/videos")
+    default=str(BASE_DIR / "videos"))
 parser.add_argument("--output_dir", type=str,            # 결과 저장 폴더 위치 지정 (args.output_dir로 접근 가능)
-    default="works/Haeun/video_analysis/results")
+    default=str(BASE_DIR / "results"))
 
 args = parser.parse_args()
 
@@ -209,7 +211,7 @@ class VideoAnalysis(BaseModel):
 # ========================================
 
 # 체크포인트 파일 경로 (CSV 파일명 기반으로 동적 생성)
-CHECKPOINT_FILE = Path(__file__).parent / "checkpoints" / f"checkpoint_{csv_stem}.json"
+CHECKPOINT_FILE = BASE_DIR / "checkpoints" / f"checkpoint_{csv_stem}.json"
 CHECKPOINT_FILE.parent.mkdir(parents=True, exist_ok=True)
 
 CHECKPOINT_EVERY = 5          # N건마다 중간 저장
